@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>echarts 实现多条进度条</title>
+    <link rel="stylesheet" href="css/processbar.css">
+</head>
+<body>
+<div id="app" class="screen">
+    <!-- **** 标题 **** -->
+    <div class="screen-title">区域分布</div>
+
+    <!-- **** 内容 **** -->
+    <div class="screen-content">
+
+        <!-- ** 方格标注 ** -->
+        <div class="icon-box">
+            <span class="icon-item">警察</span>
+            <span class="icon-item">罪犯</span>
+        </div>
+
+        <!-- ** 列表 ** -->
+        <div class="region-distribution-list">
+            <div class="list-item" v-for="(item,index) in newList" :key="index">
+                <span class="region">{{item.region}}</span>
+                <div class="bg-bar"><span></span><span></span></div>
+                <div class="num-box">
+                    <span class="policeNum">{{item.policeNum}}</span>
+                    |
+                    <span class="criminalNum">{{item.criminalNum}}</span>
+                </div>
+            </div>
+
+            <!-- ** 柱状图 ** -->
+            <div class="bar-graph">
+                <div id="regionBar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/EchartsProcessBar.js"></script>
+</body>
+</html>
