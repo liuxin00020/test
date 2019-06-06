@@ -1,4 +1,5 @@
 const config = {
+        asset: "asset",
         src: "src",
         page: "pages",
         style: "style",
@@ -9,7 +10,8 @@ const config = {
     open = require('open'),
     webpack = require('webpack-stream'),// 打包js的import
     named = require('vinyl-named'), // 打包时，不重命名js
-    webpackCongfig = require('./webpack.config.js');
+    webpackCongfig = require('./webpack.config.js'),
+    del = require('del');
 
 function errrHandler(e) {
     // 控制台发声,错误时beep一下
@@ -41,7 +43,7 @@ gulp.task('script', () => {
         .pipe(named()) // 不改变js名字
         // 如果是自定义配置,则直接引入.pipe(webpack(webpackCongfig ))
         // 下面写法是默认，默认是打包之后进行压缩了
-        .pipe(webpack())
+        .pipe(webpack(webpackCongfig))
         // .pipe($.babel({
         //     presets: ['env'] //编译模板，必须配置，否则不会编译成es5或其他的版本
         // }))
@@ -70,20 +72,28 @@ gulp.task('html', () => {
         .pipe($.connect.reload());
 });
 
-// 监听任务
-gulp.task('watch', () => {
-    gulp.watch(config.style + '/*.scss', gulp.series('scss')).on('change', function (ev) {
-        console.log('File ' + ev.path + ' was ' + ev.type + ', running tasks...')
-    });
-    gulp.watch(config.src + '/*.js', gulp.series('script')).on('change', function (ev) {
-        console.log('File ' + ev.path + ' was ' + ev.type + ', running tasks...')
-    });
-    gulp.watch(config.page + '/*.html', gulp.series('html')).on('change', function (ev) {
-        console.log('File ' + ev.path + ' was ' + ev.type + ', running tasks...')
-    });
+// 静态资源打包
+gulp.task('asset', () => {
+    return gulp.src(config.asset + '/*.*')
+        .pipe($.imagemin())
+        .pipe(gulp.dest(config.dest + '/asset'))
+        .pipe($.connect.reload());
 });
 
-gulp.task("build", gulp.series('scss', 'script', 'html'));
+// 清空编译的文件夹
+gulp.task('clear:dist', (cb) => {
+    return del(['dist'], cb);
+})
+
+// 监听任务
+gulp.task('watch', () => {
+    gulp.watch(config.style + '/*.scss', gulp.series('scss'));
+    gulp.watch(config.src + '/*.js', gulp.series('script'));
+    gulp.watch(config.page + '/*.html', gulp.series('html'));
+    gulp.watch(config.asset, gulp.series('asset'));
+});
+
+gulp.task("build", gulp.series('clear:dist', 'scss', 'script', 'html'));
 
 // 启动服务
 gulp.task('serve', () => {

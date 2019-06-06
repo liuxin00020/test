@@ -5,10 +5,25 @@ module.exports = {
     mode: 'development',
     devtool: "source-map",
     module: {
-        rules: [{
-            test: /\.js$/,
-            use: 'babel-loader',
-            exclude: /node_modules/
-        }]
+        rules: [
+            {
+                test: /\.js$/,
+                use: 'babel-loader',
+                // exclude: /node_modules/
+            },
+            {
+                test: /\.css$/,
+                use: [{loader: 'style-loader'},
+                    {loader: 'css-loader'}],
+                // exclude: /node_modules/
+            },
+            {
+                test: /\.scss$/,
+                use: [{loader: 'style-loader'},
+                    {loader: 'css-loader'},
+                    {loader: 'sass-loader'}],
+                // exclude: /node_modules/
+            }
+        ]
     }
 };

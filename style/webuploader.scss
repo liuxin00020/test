@@ -1,0 +1,40 @@
+@import "common.scss";
+
+.demo {
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin: 10px;
+
+  .dnd {
+    width: 100%;
+    border: 1px dashed #ccc;
+    padding: 100px 10px 10px;
+    position: relative;
+  }
+
+  .btns {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn-upload {
+    width: 94px;
+    height: 41px;
+    margin-left: 20px;
+    background-color: mediumseagreen;
+    color: #fff;
+    border-radius: 3px;
+    font-size: inherit;
+  }
+
+  .tips {
+    width: 100%;
+    font-size: 1.2rem;
+    color: #ccc;
+    text-align: center;
+    position: absolute;
+    top: 40px;
+  }
+}
+
