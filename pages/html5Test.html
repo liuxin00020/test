@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>html5新标签使用</title>
+    <style>
+        h1 {
+            color: royalblue;
+            border-bottom: 2px solid royalblue;
+        }
+
+        .title, h3 {
+            font-weight: 600;
+            font-size: 18px;
+            color: maroon;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid lightskyblue;
+        }
+    </style>
+</head>
+<body>
+
+<!-- *** 结构性元素 *** -->
+<div>
+    <h1>结构性元素</h1>
+    <section>
+        <span class="title">section标签</span>
+        <p>
+            <mark>语义化标签</mark>
+            ，该元素表示区域的章节表述
+        </p>
+    </section>
+    <hr>
+    <header>
+        <h3>header标签</h3>
+        <p>
+            <mark>语义化标签</mark>
+            ，页面的头部
+        </p>
+    </header>
+    <hr>
+    <footer>
+        <h3>footer标签</h3>
+        <p>
+            <mark>语义化标签</mark>
+            ，通常用来表示页面的尾部
+        </p>
+    </footer>
+    <hr>
+    <nav>
+        <h3>nav标签</h3>
+        <p>
+            <mark>语义化标签</mark>
+            ，通常用来表示菜单导航或链接导航
+        </p>
+        <a href="http://www.baidu.com">百度</a>
+        <a href="http://www.taobao.com">淘宝</a>
+        <a href="http://www.jd.com">京东</a>
+    </nav>
+    <hr>
+    <article>
+        <h3>article标签</h3>
+        <p>
+            <mark>语义化标签</mark>
+            ，通常用来表示一篇文章的主题内容，一般为文字集中显示的区域
+        </p>
+        <p>Windows Internet Explorer 9（简称 IE9）于 2011 年 3 月 14 日发布.....</p>
+    </article>
+    <hr>
+</div>
+
+<!-- *** 块级性元素 *** -->
+<div>
+    <h1>块级性元素</h1>
+    <aside>
+        <h3>aside标签</h3>
+        <p>
+            <mark>语义化标签</mark>
+            ，通常用来表示补充的内容，例如侧边栏，或者是摘要。
+        </p>
+    </aside>
+    <hr>
+    <h3>figure标签，通常与figcaption配合使用</h3>
+    <p>
+        <mark>语义化标签</mark>
+        ，通常用来描述文章中的图像、图表、照片等，
+    </p>
+    <figure>
+        <img src="../asset/timg.jpg" width="350" height="234"/>
+        <figcaption>图像的描述</figcaption>
+    </figure>
+    <hr>
+    <span class="title">code标签</span>
+    <code>
+        // 这是code标签
+        var i = 0;
+        console.log('111');
+        <mark>语义化标签</mark>
+    </code>
+    <hr>
+    <dialog open style="">
+        <mark>IE不支持</mark>
+        这是打开的对话窗口dialog
+    </dialog>
+    <hr>
+    <details open>
+        <summary>details标签</summary>
+        <p>
+            <mark>Chrome/Safari支持</mark>
+            All pages and graphics on this web site are the property of W3School.
+        </p>
+    </details>
+    <hr>
+    <h3>ruby元素</h3>
+    <p>与rt和rp配合使用，用于ruby注释（中文注音或字符）</p>
+    <ruby>
+        汉
+        <rp>(</rp>
+        <rt>han</rt>
+        <rp>)</rp>
+        字
+        <rp>(</rp>
+        <rt>zi</rt>
+        <rp>)</rp>
+        书
+        <rp>(</rp>
+        <rt>shu</rt>
+        <rp>)</rp>
+        穿
+        <rp>(</rp>
+        <rt>&nbsp;chuan</rt>
+        <rp>)</rp>
+    </ruby>
+</div>
+
+<!-- *** 行内语义性元素 *** -->
+<div>
+    <h1>行内语义性元素</h1>
+    <div>
+        <h3>meter标签</h3>
+        <p>
+            <mark>IE不支持</mark>
+            用来表示度量单位，工资、数量、百分比
+        </p>
+        <meter value="3" min="0" max="10">十分之三</meter>
+        &nbsp;&nbsp;&nbsp;
+        <meter value="0.6">60%</meter>
+    </div>
+    <hr>
+    <span class="title">time标签</span>
+    <time datetime="2019/06/05">
+        <mark>语义化标签</mark>
+        ，datetime属性
+    </time>
+    <hr>
+    <h3>progress标签</h3>
+    <progress max="100" value="20">20</progress>&nbsp;&nbsp;
+    <progress max="100">20</progress>
+    <hr>
+    <span class="title">audio标签</span>
+    <audio controls="controls" loop="loop">
+        <source src="../asset/tianhou.mp3">
+        Your browser does not support the audio element.
+    </audio>
+    <hr>
+    <span class="title">canvas标签</span>
+    <canvas width="100" height="100" style="background-color:cadetblue;">该浏览器不支持canvas</canvas>
+    <hr>
+    <span class="title">embed元素</span>
+    <embed src="helloworld.swf" alt="flash动画" style="width: 100px;height: 100px;"/>
+</div>
+<!-- *** html5新属性 *** -->
+<div>
+    <h1>html5新属性</h1>
+
+    <ul contenteditable="true">
+        <li>contenteditable属性，true可编辑，false不可编辑，默认inherit，继承父级</li>
+        <li>请点击我进行编辑</li>
+    </ul>
+</div>
+
+
+</body>
+</html>

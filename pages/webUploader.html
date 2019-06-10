@@ -2,15 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
     <title>webUploader测试</title>
     <link rel="stylesheet" href="css/webuploader.css">
 </head>
 <body>
 <div class="demo">
-    <div class="dnd">
+    <div id="dndBox" class="dnd dnd-bd">
         <!-- 用来存放文件信息 -->
-        <div id="thelist" class="uploader-list"></div>
-        <span class="tips">可直接拖拽文件到此处</span>
+        <div id="thelist" class="uploader-list">
+            <span class="tips">可直接拖拽文件到此处</span>
+        </div>
         <!-- 按钮 -->
         <div class="btns">
             <div id="picker">选择文件</div>
