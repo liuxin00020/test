@@ -13,11 +13,19 @@
         <div id="thelist" class="uploader-list">
             <span class="tips">可直接拖拽文件到此处</span>
         </div>
+
         <!-- 按钮 -->
-        <div class="btns">
-            <div id="picker">选择文件</div>
-            <button id="ctlBtn" class="btn-upload">开始上传</button>
+        <div class="status-bar process-hide">
+            <div class="process">
+                <span class="process-bar"></span>
+                <span class="process-text">0%</span>
+            </div>
+            <div class="btns">
+                <div id="picker">选择文件</div>
+                <button id="ctlBtn" class="btn-upload" style="display: none;">开始上传</button>
+            </div>
         </div>
+
     </div>
 </div>
 </body>

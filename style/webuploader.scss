@@ -15,21 +15,6 @@
     padding: 10px;
   }
 
-  .btns {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-  }
-
-  .btn-upload {
-    width: 94px;
-    height: 41px;
-    margin-left: 20px;
-    background-color: mediumseagreen;
-    color: #fff;
-    border-radius: 3px;
-    font-size: inherit;
-  }
 
   .uploader-list {
     width: 100%;
@@ -68,6 +53,7 @@
     display: inline-block;
     white-space: nowrap;
     text-overflow: ellipsis;
+    overflow: hidden;
   }
 
   .state {
@@ -95,6 +81,70 @@
     display: block;
     height: 100%;
     background-color: mediumseagreen;
+  }
+
+  .bar-error {
+    background-color: orangered;
+  }
+
+
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  // 末尾
+  .process {
+    width: 30%;
+    height: 20px;
+    line-height: 20px;
+    border: 1px solid mediumseagreen;
+    position: relative;
+    border-radius: 3px;
+  }
+
+  .process-bar {
+    display: block;
+    width: 10%;
+    background-color: mediumseagreen;
+    height: 100%;
+  }
+
+  .process-text {
+    position: absolute;
+    color: green;
+    top: 0;
+    right: 0;
+    font-size: .8rem;
+    padding-right: 10px;
+  }
+
+  .btns {
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .btn-upload {
+    width: 94px;
+    height: 41px;
+    margin-left: 20px;
+    background-color: mediumseagreen;
+    color: #fff;
+    border-radius: 3px;
+    font-size: inherit;
+  }
+
+  .process-hide {
+    .btns {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .process {
+      display: none;
+    }
   }
 }
 
