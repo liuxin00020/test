@@ -13,21 +13,25 @@
   .dnd-bd {
     border: 1px dashed #ccc;
     padding: 10px;
-  }
 
-
-  .uploader-list {
-    width: 100%;
+    .tips {
+      display: block;
+    }
   }
 
   .tips {
-    display: block;
+    display: none;
     width: 100%;
     font-size: 1.2rem;
     color: #ccc;
     height: 80px;
     line-height: 80px;
     text-align: center;
+  }
+
+  // 列表样式
+  .uploader-list {
+    width: 100%;
   }
 
   .item {
@@ -39,14 +43,14 @@
     padding: 5px;
   }
 
-  .delete {
+  .item-delete {
     color: orangered;
     margin-right: 10px;
     font-size: .8rem;
     cursor: pointer;
   }
 
-  .info {
+  .item-info {
     font-weight: 600;
     margin-right: 20px;
     width: 40%;
@@ -56,17 +60,17 @@
     overflow: hidden;
   }
 
-  .state {
+  .item-state {
     color: #bbb;
     width: 25%;
     display: inline-block;
   }
 
-  .success {
+  .item-state-success {
     color: limegreen;
   }
 
-  .error {
+  .item-state-error {
     color: orangered;
   }
 
@@ -99,7 +103,7 @@
     width: 30%;
     height: 20px;
     line-height: 20px;
-    border: 1px solid mediumseagreen;
+    border: 1px solid #04acde;
     position: relative;
     border-radius: 3px;
   }
@@ -107,13 +111,13 @@
   .process-bar {
     display: block;
     width: 10%;
-    background-color: mediumseagreen;
+    background-color: #00b7ee;
     height: 100%;
   }
 
   .process-text {
     position: absolute;
-    color: green;
+    color: #067596;
     top: 0;
     right: 0;
     font-size: .8rem;
@@ -121,14 +125,13 @@
   }
 
   .btns {
-    width: 50%;
     display: flex;
     justify-content: flex-end;
   }
 
   .btn-upload {
     width: 94px;
-    height: 41px;
+    height: 41px;/
     margin-left: 20px;
     background-color: mediumseagreen;
     color: #fff;
@@ -136,7 +139,7 @@
     font-size: inherit;
   }
 
-  .process-hide {
+  .status-bar-hide {
     .btns {
       width: 100%;
       justify-content: center;
@@ -144,6 +147,13 @@
 
     .process {
       display: none;
+    }
+  }
+
+  .tip-info {
+    span {
+      color: dodgerblue;
+      cursor: pointer;
     }
   }
 }
