@@ -9,6 +9,7 @@ import 'webuploader/css/webuploader.css'
         $list = $dnd.find('#thelist'), // 存放文件的列表
         $statusBar = $dnd.find('.status-bar'), // 状态栏
         $btnUpload = $statusBar.find('#ctlBtn'), // 开始上传的按钮
+        $process = $statusBar.find('.process'), // 开始上传的按钮
         $tipInfo = $statusBar.find('.tip-info'), // 上传错误提示
         state = 'pending', // 全局状态 pending（初始状态）,ready（等待上传）,uploading（上传中）,paused（暂停）,finish（上传完成）
         totalPercent = {}, // 存储文件进度，用于总进度条展示 {fileId:[fileSize,filePercent]}
@@ -43,6 +44,9 @@ import 'webuploader/css/webuploader.css'
         <span class="item-delete" title="删除">X</span>
         <span class="item-info"> ${file.name} </span>
         <span class="item-state">等待上传...</span>
+        <div class="progress">
+           <span class="progress-bar" role="progressbar" style="width: 0%"></span>
+        </div>
         </div>`).appendTo($list);
 
         // 绑定删除事件
@@ -55,17 +59,9 @@ import 'webuploader/css/webuploader.css'
 
         // 总进度条
         totalPercent[file.id] = [file.size, 0];
-        updateTotalBar();
 
-        // 文件状态绑定
-        file.on('statuschange', function (cur, prev) {
-            if (cur === 'error' || cur === 'invalid') { // 错误
-                totalPercent[file.id][1] = 1;
-            } else if (cur === 'queued') {
-                totalPercent[file.id][1] = 0;
-            }
-        });
-
+        statusChange(file);// 文件状态绑定
+        updateTotalBar(); // 刷新全局进度条
         // 隐藏提示拖动
         setState('ready');
     });
@@ -75,43 +71,17 @@ import 'webuploader/css/webuploader.css'
         let $item = $('#' + file.id),
             $percent = $item.find('.progress .progress-bar');
 
-        // 避免重复创建
-        if (!$percent.length) {
-            $percent = $(`<div class="progress progress-striped active">
-           <span class="progress-bar" role="progressbar" style="width: 0%"></span>
-           </div>`).appendTo($item).find('.progress-bar');
-        }
-
         $item.find('.state').text('上传中');
-
         $percent.css('width', percentage * 100 + '%');
+        !$percent.parent().hasClass("active") ? $percent.parent().addClass("active") : false;
         // 全局进度条
         totalPercent[file.id] = [file.size, percentage];
         updateTotalBar();
     });
 
-    uploader.on('uploadSuccess', function (file) {
-        let $item = $('#' + file.id), // 文件盒子
-            $state = $item.find('.item-state'), // 状态盒子
-            $delete = $item.find('.item-delete'), // 删除按钮
-            $percent = $item.find('.progress .progress-bar'); // 单个文件进度条
-        $state.text('上传成功');
-        $state.addClass('item-state-success');
-        $percent.removeClass('bar-error');
-        $delete.remove();
-    });
-
-    uploader.on('uploadError', function (file) {
-        let $item = $('#' + file.id), // 文件盒子
-            $state = $item.find('.item-state'),
-            $percent = $item.find('.progress .progress-bar'); // 单个文件进度条
-        $state.text('上传出错');
-        $state.addClass('item-state-error');
-        $percent.addClass('bar-error');
-    });
-
     /* -- 全局状态监听 -- */
-    uploader.on('all', function (type) {
+    uploader.on('all', function (type, file, percent) {
+        console.log("type:" + type);
         switch (type) {
             // 整体状态控制
             case 'uploadFinished':
@@ -161,29 +131,28 @@ import 'webuploader/css/webuploader.css'
         $btnUpload.addClass("state-" + val);
         state = val; // 赋值给全局变量，state
 
-        let tipInfo = ''; // 进度条旁边提示文本
-
         switch (state) {
             case 'pending': // 初始状态
                 $dnd.addClass("dnd-bd"); // 加虚线
-                $list.find('.item').remove();
-                $statusBar.addClass("status-bar-hide"); // 进度条
-                $btnUpload.hide();
+                $process.removeClass("active");
+                $btnUpload.removeClass("active")
+                $tipInfo.removeClass("active");
+                $list.find('.item').remove(); // 删除队列dom
+                uploader.reset(); // 重置队列，已上传成功的可以再上传
                 uploader.refresh();
-                tipInfo = "";
                 break;
 
             case 'ready': // 待上传
                 $dnd.removeClass("dnd-bd");
-                $statusBar.addClass("status-bar-hide");
+                $process.removeClass("active");
+                $tipInfo.removeClass("active");
                 $btnUpload.text("开始上传");
-                $btnUpload.show();
+                $btnUpload.addClass("active")
                 uploader.refresh();
-                tipInfo = "";
                 break;
 
             case 'uploading': // 正在上传
-                $statusBar.removeClass("status-bar-hide");
+                $process.addClass("active");
                 $btnUpload.text("暂停上传");
                 break;
 
@@ -192,16 +161,27 @@ import 'webuploader/css/webuploader.css'
                 break;
 
             case 'finish':
-                let stats = uploader.getStats();
+                $tipInfo.addClass("active");
+                let stats = uploader.getStats(),
+                    state = "",
+                    tipInfo = "";// 进度条旁边提示文本
                 if (stats.successNum && (!stats.uploadFailNum)) {
                     tipInfo = `${stats.successNum}个文件，全部上传成功`;
-                    setState('pending'); // 回到初始状态
+                    state = 'pending'; // 回到初始状态
                 } else {
                     tipInfo = `${stats.uploadFailNum}个文件上传失败，<span>重新上传</span>或<span>忽略</span>`
+                    state = 'error';
                 }
+                $tipInfo.html(tipInfo);
+                setState(state); // 回到初始状态
                 break;
+            case 'error':
+                $process.removeClass("active");
+                $process.find(".process-bar").width(0);
+                $process.find(".process-text").text('0%');
+                $btnUpload.removeClass("active")
+                uploader.refresh();
         }
-        $tipInfo.html(tipInfo);
     }
 
     /**
@@ -217,6 +197,37 @@ import 'webuploader/css/webuploader.css'
         let percent = Math.round((totalSize ? (loadSize / totalSize) : 0) * 100) + '%';
         $statusBar.find(".process-bar").width(percent);
         $statusBar.find(".process-text").text(percent);
+    }
+
+    /**
+     * 文件状态函数
+     * @param file 文件对象
+     */
+    function statusChange(file) {
+        file.on('statuschange', function (cur, prev) {
+            console.log("cur" + cur);
+            let $file = $('#' + file.id),
+                stateText = "等待上传...",
+                stateClass = "item-state ",
+                barClass = "progress-bar ";
+
+            if (cur === 'queued') { // 进入队列
+                totalPercent[file.id][1] = 0;
+            } else if (cur === 'error' || cur === 'invalid') { // 错误
+                totalPercent[file.id][1] = 1;
+                stateText = "上传出错";
+                stateClass += "item-state-error";
+                barClass += "bar-error";
+            } else if (cur === 'complete') { // 上传完成，更改状态
+                $('#' + file.id).find('.item-delete').remove(); // 删除
+                stateText = "上传成功";
+                stateClass += "item-state-success";
+            }
+
+            $file.find('.item-state').text(stateText);
+            $file.find('.item-state').attr('class', stateClass);
+            $file.find('.progress-bar').attr('class', barClass);
+        });
     }
 })();
 

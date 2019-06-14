@@ -77,7 +77,7 @@
   .progress {
     width: 30%;
     height: 20px;
-    display: inline-block;
+    display: none;
     border: 1px solid #ccc;
   }
 
@@ -100,6 +100,7 @@
 
   // 末尾
   .process {
+    display: none;
     width: 30%;
     height: 20px;
     line-height: 20px;
@@ -109,8 +110,8 @@
   }
 
   .process-bar {
+    width: 0;
     display: block;
-    width: 10%;
     background-color: #00b7ee;
     height: 100%;
   }
@@ -130,8 +131,9 @@
   }
 
   .btn-upload {
+    display: none;
     width: 94px;
-    height: 41px;/
+    height: 41px;
     margin-left: 20px;
     background-color: mediumseagreen;
     color: #fff;
@@ -139,22 +141,17 @@
     font-size: inherit;
   }
 
-  .status-bar-hide {
-    .btns {
-      width: 100%;
-      justify-content: center;
-    }
-
-    .process {
-      display: none;
-    }
-  }
-
   .tip-info {
+    display: none;
+
     span {
       color: dodgerblue;
       cursor: pointer;
     }
+  }
+
+  .active {
+    display: block;
   }
 }
 
