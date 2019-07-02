@@ -31,7 +31,7 @@ gulp.task('scss', () => {
             remove: true,                   // 删除过时前缀，默认true
             flexbox: true,                   // 为flexbox属性添加前缀，默认true
         })) // 编译scss
-        // .pipe($.cleanCss()) // 压缩
+        .pipe($.cleanCss()) // 压缩
         .pipe($.plumber({errorHandler: errrHandler})) // 检查错误，防止出错的时候，奔溃
         .pipe(gulp.dest(config.dest + '/css'))
         .pipe($.connect.reload());

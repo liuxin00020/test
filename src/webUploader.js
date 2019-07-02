@@ -222,6 +222,7 @@ import 'webuploader/css/webuploader.css'
                 $('#' + file.id).find('.item-delete').remove(); // 删除
                 stateText = "上传成功";
                 stateClass += "item-state-success";
+                barClass += "bar-success";
             }
 
             $file.find('.item-state').text(stateText);
