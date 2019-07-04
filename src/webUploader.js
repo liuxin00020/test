@@ -81,7 +81,6 @@ import 'webuploader/css/webuploader.css'
 
     /* -- 全局状态监听 -- */
     uploader.on('all', function (type, file, percent) {
-        console.log("type:" + type);
         switch (type) {
             // 整体状态控制
             case 'uploadFinished':
@@ -102,15 +101,13 @@ import 'webuploader/css/webuploader.css'
     $btnUpload.on('click', function () {
         if (state == 'uploading') { // 暂停
             uploader.stop();
-            setState('paused');
         } else if (state == 'ready' || state == 'paused') { // 继续上传
             uploader.upload();
-            setState('uploading');
         }
     });
 
     /* -- 重新上传，或忽略失败文件 -- */
-    $statusBar.on('click', '.tip-info span', function () {
+    $tipInfo.on('click', 'span', function () {
         if ($(this).text() == '重新上传') {
             uploader.retry();
         } else {
@@ -147,12 +144,14 @@ import 'webuploader/css/webuploader.css'
                 $process.removeClass("active");
                 $tipInfo.removeClass("active");
                 $btnUpload.text("开始上传");
-                $btnUpload.addClass("active")
+                $btnUpload.addClass("active");
                 uploader.refresh();
                 break;
 
             case 'uploading': // 正在上传
                 $process.addClass("active");
+                $tipInfo.removeClass("active");
+                $btnUpload.addClass("active");
                 $btnUpload.text("暂停上传");
                 break;
 
@@ -205,7 +204,6 @@ import 'webuploader/css/webuploader.css'
      */
     function statusChange(file) {
         file.on('statuschange', function (cur, prev) {
-            console.log("cur" + cur);
             let $file = $('#' + file.id),
                 stateText = "等待上传...",
                 stateClass = "item-state ",

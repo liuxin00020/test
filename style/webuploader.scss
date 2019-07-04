@@ -17,6 +17,10 @@
     .tips {
       display: block;
     }
+
+    .status-bar {
+      justify-content: center;
+    }
   }
 
   .tips {
@@ -98,7 +102,7 @@
   .status-bar {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
   }
 
   // 末尾
