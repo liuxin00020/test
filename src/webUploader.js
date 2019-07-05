@@ -4,7 +4,7 @@ import 'webuploader/css/webuploader.css'
 
 (function () {
 
-    /* -- 变量定义 -- */
+    /** -- 变量定义 -- */
     let $dnd = $('#dndBox'), // 拖拽框
         $list = $dnd.find('#thelist'), // 存放文件的列表
         $statusBar = $dnd.find('.status-bar'), // 状态栏
@@ -15,7 +15,7 @@ import 'webuploader/css/webuploader.css'
         totalPercent = {}, // 存储文件进度，用于总进度条展示 {fileId:[fileSize,filePercent]}
         uploader; // WebUploader实例
 
-    /* -- 初始化WebUploader实例 -- */
+    /** -- 初始化WebUploader实例 -- */
     uploader = WebUploader.create({
         // auto: false, // 选完文件后，是否自动上传
         swf: 'webuploader/dist/Uploader.swf',   // swf文件路径
@@ -37,7 +37,7 @@ import 'webuploader/css/webuploader.css'
         fileSingleSizeLimit: 2048000 //限制单个上传图片的大小
     });
 
-    /* --  当有文件被添加进队列的时候 -- */
+    /** 当有文件被添加进队列的时候 -- */
     uploader.on('fileQueued', function (file) {
         // 生成文件列表
         let $file = $(`<div id="${file.id}" class="item">
@@ -50,11 +50,16 @@ import 'webuploader/css/webuploader.css'
         </div>`).appendTo($list);
 
         // 绑定删除事件
-        $file.one('click', '.item-delete', function () {
+        $file.one('click', '.item-delete', (event) => {
+            console.log(file)
             uploader.removeFile(file, true); // 队列中一并删除
             $file.remove(); // 清除html
             delete totalPercent[file.id];
             updateTotalBar();
+            console.log(uploader.getFiles()[0])
+            if (uploader.getFiles().size == 0) { // 如果队列中没有文件，则重置到初始状态
+                setState("pending");
+            }
         });
 
         // 总进度条
@@ -62,11 +67,10 @@ import 'webuploader/css/webuploader.css'
 
         statusChange(file);// 文件状态绑定
         updateTotalBar(); // 刷新全局进度条
-        // 隐藏提示拖动
-        setState('ready');
+        setState('ready');// 修改状态
     });
 
-    /* -- 单个文件上传过程中创建进度条实时显示。-- */
+    /** -- 单个文件上传过程中创建进度条实时显示。-- */
     uploader.on('uploadProgress', function (file, percentage) {
         let $item = $('#' + file.id),
             $percent = $item.find('.progress .progress-bar');
@@ -79,7 +83,7 @@ import 'webuploader/css/webuploader.css'
         updateTotalBar();
     });
 
-    /* -- 全局状态监听 -- */
+    /** -- 全局状态监听 -- */
     uploader.on('all', function (type, file, percent) {
         switch (type) {
             // 整体状态控制
@@ -97,7 +101,7 @@ import 'webuploader/css/webuploader.css'
         }
     });
 
-    /* -- 开始上传按钮 -- */
+    /** -- 开始上传按钮 -- */
     $btnUpload.on('click', function () {
         if (state == 'uploading') { // 暂停
             uploader.stop();
@@ -106,12 +110,12 @@ import 'webuploader/css/webuploader.css'
         }
     });
 
-    /* -- 重新上传，或忽略失败文件 -- */
+    /** -- 重新上传，或忽略失败文件 -- */
     $tipInfo.on('click', 'span', function () {
         if ($(this).text() == '重新上传') {
             uploader.retry();
         } else {
-            setState('pending');
+            // setState('pending');
             uploader.reset(); // 忽略则重置队列
         }
     });
@@ -162,16 +166,14 @@ import 'webuploader/css/webuploader.css'
             case 'finish':
                 $tipInfo.addClass("active");
                 let stats = uploader.getStats(),
-                    state = "",
-                    tipInfo = "";// 进度条旁边提示文本
+                    state = "";
                 if (stats.successNum && (!stats.uploadFailNum)) {
-                    tipInfo = `${stats.successNum}个文件，全部上传成功`;
+                    alert(`${stats.successNum}个文件，全部上传成功`);
                     state = 'pending'; // 回到初始状态
                 } else {
-                    tipInfo = `${stats.uploadFailNum}个文件上传失败，<span>重新上传</span>或<span>忽略</span>`
+                    $tipInfo.html(`${stats.uploadFailNum}个文件上传失败，<span>重新上传</span>或<span>忽略</span>`);
                     state = 'error';
                 }
-                $tipInfo.html(tipInfo);
                 setState(state); // 回到初始状态
                 break;
             case 'error':

@@ -98,7 +98,8 @@ gulp.task("build", gulp.series('clear:dist', 'scss', 'script', 'html'));
 // 启动服务
 gulp.task('serve', () => {
     $.connect.server({
-        root: config.dest,        //服务起来的入口
+        root: config.dest,      //服务入口文件夹
+        index: 'index.html',    // 打开index.html
         livereload: true,        //文件更改后自动刷新页面
         port: 8081        //端口号
     });
