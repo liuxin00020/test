@@ -34,7 +34,6 @@ import 'webuploader/css/webuploader.css'
         resize: false,
 
         fileNumLimit: 100, //限制上传个数
-        fileSingleSizeLimit: 2048000 //限制单个上传图片的大小
     });
 
     /** 当有文件被添加进队列的时候 -- */
@@ -50,14 +49,12 @@ import 'webuploader/css/webuploader.css'
         </div>`).appendTo($list);
 
         // 绑定删除事件
-        $file.one('click', '.item-delete', (event) => {
-            console.log(file)
+        $file.one('click', '.item-delete', () => {
             uploader.removeFile(file, true); // 队列中一并删除
             $file.remove(); // 清除html
             delete totalPercent[file.id];
             updateTotalBar();
-            console.log(uploader.getFiles()[0])
-            if (uploader.getFiles().size == 0) { // 如果队列中没有文件，则重置到初始状态
+            if (uploader.getFiles("QUEUED").length == 0) { // 如果队列中没有文件，则重置到初始状态
                 setState("pending");
             }
         });
@@ -104,7 +101,7 @@ import 'webuploader/css/webuploader.css'
     /** -- 开始上传按钮 -- */
     $btnUpload.on('click', function () {
         if (state == 'uploading') { // 暂停
-            uploader.stop();
+            uploader.stop(); // 正在上传的文件也暂停
         } else if (state == 'ready' || state == 'paused') { // 继续上传
             uploader.upload();
         }
@@ -115,7 +112,7 @@ import 'webuploader/css/webuploader.css'
         if ($(this).text() == '重新上传') {
             uploader.retry();
         } else {
-            // setState('pending');
+            setState('pending');
             uploader.reset(); // 忽略则重置队列
         }
     });
@@ -206,13 +203,21 @@ import 'webuploader/css/webuploader.css'
      */
     function statusChange(file) {
         file.on('statuschange', function (cur, prev) {
+            console.log(cur)
             let $file = $('#' + file.id),
                 stateText = "等待上传...",
                 stateClass = "item-state ",
                 barClass = "progress-bar ";
-
             if (cur === 'queued') { // 进入队列
                 totalPercent[file.id][1] = 0;
+            } else if (cur === 'progress') { // 上传中
+                totalPercent[file.id][1] = 1;
+                stateText = "上传中";
+            } else if (cur === 'interrupt') { // 上传暂停
+                totalPercent[file.id][1] = 1;
+                stateText = "上传暂停";
+                stateClass += "item-state-stop";
+                barClass += "bar-success";
             } else if (cur === 'error' || cur === 'invalid') { // 错误
                 totalPercent[file.id][1] = 1;
                 stateText = "上传出错";
