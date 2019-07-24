@@ -101,7 +101,7 @@ import 'webuploader/css/webuploader.css'
     /** -- 开始上传按钮 -- */
     $btnUpload.on('click', function () {
         if (state == 'uploading') { // 暂停
-            uploader.stop(); // 正在上传的文件也暂停
+            uploader.stop(true); // 正在上传的文件也暂停
         } else if (state == 'ready' || state == 'paused') { // 继续上传
             uploader.upload();
         }
@@ -217,7 +217,6 @@ import 'webuploader/css/webuploader.css'
                 totalPercent[file.id][1] = 1;
                 stateText = "上传暂停";
                 stateClass += "item-state-stop";
-                barClass += "bar-success";
             } else if (cur === 'error' || cur === 'invalid') { // 错误
                 totalPercent[file.id][1] = 1;
                 stateText = "上传出错";
