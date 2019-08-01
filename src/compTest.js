@@ -7,12 +7,13 @@ new Vue({
     components: {MultiCheckList},
     data: function () {
         return {
-            multiCheckOptions1: MultiCheckOptions,
+            multiCheckOptions: [
+                {'value': '1', 'name': '选项1'},
+                {'value': '2','name': '选项2(禁用)','disabled': true},
+                {'value': '3', 'name': '选项3'}],
             checkedVal1: [1],
-            multiCheckOptions2: MultiCheckOptions,
-            checkedVal2: [1,2],
-            multiCheckOptions3: MultiCheckOptions,
-            checkedVal3: [1,2],
+            checkedVal2: [1, 2],
+            checkedVal3: [1, 2],
         }
     }
 });
