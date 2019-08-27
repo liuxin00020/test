@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BFC测试</title>
+    <style lang="scss" rel="stylesheet/scss">
+        hr {
+            border-top: 1px solid red;
+        }
+
+        .float {
+            border: 5px dotted #00b7ee;
+        }
+
+        .float-span {
+            float: left;
+            width: 100px;
+            height: 100px;
+            margin-top: 10px;
+            border: 5px solid #067596;
+        }
+
+        .new-bfc { /* 再形成一个BFC*/
+            overflow: hidden;
+            margin: 20px;
+        }
+
+        .margin {
+            border: 5px dotted #00b7ee;
+            margin: 40px 0;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .margin-inner {
+            margin: 20px 0;
+            border: 5px solid #067596;
+        }
+
+    </style>
+</head>
+<body>
+<ul>
+    <li><a href="#float">float测试</a></li>
+    <li><a href="#margin">margin测试</a></li>
+</ul>
+
+<hr>
+<div class="new-bfc" id="float">
+    <div class="float">
+        <span class="float-span">这是float盒子</span>
+        这是float的外框
+    </div>
+</div>
+<div class="float new-bfc">
+    <span class="float-span">这是float盒子</span>
+    这是float的外框，
+    <red>此时外框是一个单独的bfc</red>
+</div>
+<hr>
+<div class="new-bfc" id="margin">
+    <div class="margin">
+        <p class="margin-inner">这里是设置了margin:20px</p>
+        <p class="margin-inner">这里是设置了margin:20px</p>
+    </div>
+    <div class="margin">
+        <p class="margin-inner">这里是设置了margin:20px</p>
+        <p class="margin-inner">这里是设置了margin:20px</p>
+    </div>
+</div>
+
+</body>
+</html>

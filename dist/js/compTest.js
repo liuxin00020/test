@@ -247,15 +247,6 @@ __webpack_require__.r(__webpack_exports__);
       default: true
     }
   },
-  watch: {
-    // 监听数据变化，回传数据到父组件
-    checkedVal(newValue, oldValue) {
-      if (newValue != oldValue) {
-        this.$emit('change', newValue);
-      }
-    }
-
-  },
 
   data() {
     return {
@@ -264,8 +255,22 @@ __webpack_require__.r(__webpack_exports__);
       curTime: new Date().getTime() // 获取当前时间，生成唯一id，保证一个页面可使用多个组件
 
     };
-  }
+  },
 
+  watch: {
+    // 监听数据变化，回传数据到父组件
+    checkedVal(newValue, oldValue) {
+      if (newValue != oldValue) {
+        this.$emit('change', newValue);
+      }
+    },
+
+    'checked': {
+      handler(newVal, oldVal) {},
+
+      deep: true
+    }
+  }
 });
 
 /***/ }),
